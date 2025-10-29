@@ -10,6 +10,9 @@
   --border: #23223A;
   --positive: #3BE8B0;
   --negative: #FF5E8E;
+  --surface-card-2: #1C1A32;
+  --surface-card-3: #201F3D;
+  --surface-card-4: #0E0D1E;
 }
 
 @theme {
@@ -22,7 +25,9 @@
   --color-border: var(--border);
   --color-positive: var(--positive);
   --color-negative: var(--negative);
-
+  --color-card-2: var(--surface-card-2);
+  --color-card-3: var(--surface-card-3);
+  --color-card-4: var(--surface-card-4);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
