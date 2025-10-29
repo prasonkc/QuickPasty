@@ -6,8 +6,9 @@ import PasteUi from "./Components/PasteUI";
 
 export default function Home() {
   return (
-  <div>
+  <div className="flex">
       <PasteUi />
+      <PasteContent/>
   </div>
   );
 }
