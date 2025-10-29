@@ -23,6 +23,8 @@ const PasteUI = () => {
       {/* pastes */}
       <div className="paste-container ">
         <PasteComponent />
+        <PasteComponent />
+        <PasteComponent />
       </div>
     </div>
   );
