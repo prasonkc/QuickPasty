@@ -5,12 +5,12 @@ const PasteContent = () => {
   return (
     <div className="w-full bg-card ml-0 m-3 rounded-2xl p-3">
       {/* Title */}
-      <div className="flex justify-around">
+      <div className="flex items-center justify-around">
         <input
           type="text"
           disabled
           placeholder="Your title here..."
-          className="font-bold text-2xl flex items-center m-3 outline-none w-full"
+          className="font-bold text-2xl flex items-center mx-3 my-2 outline-none w-full"
         />
 
         <div className="flex gap-7 items-center mr-5">
@@ -21,10 +21,10 @@ const PasteContent = () => {
       </div>
 
       {/* Border */}
-      <div className="my-6 h-0.5 w-full bg-border mx-auto"></div>
+      <div className="my-3 h-0.5 w-full bg-border mx-auto"></div>
 
       {/* Description */}
-      <div className="m-3">
+      <div className="mx-3">
         <textarea
           placeholder="Your text here..."
           disabled
