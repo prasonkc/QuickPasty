@@ -2,6 +2,17 @@ import React from "react";
 import { Plus } from "lucide-react";
 import PasteComponent from "./PasteComponent"
 
+// interface paste{
+//   paste_id: string,
+//   paste_title: string,
+//   paste_content: string
+// }
+
+// interface PasteUIProps{
+//   pastes: paste[],
+// }
+
+
 const PasteUI = () => {
   return (
     <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full h-[97vh]">
