@@ -12,8 +12,8 @@ const PasteUI = () => {
 
       {/* New paste button */}
       <div className="text-lg font-extrabold my-8 bg-primary w-full hover:bg-[#5345ee] rounded-lg">
-        <button className="flex mx-auto items-center gap-3 p-4 w-full justify-center cursor-pointer">
-          <Plus size={20} />
+        <button className="group flex mx-auto items-center gap-3 p-4 w-full justify-center cursor-pointer transition-all hover:scale-110">
+          <Plus size={20} className="transition-all duration-100 ease-in group-hover:rotate-45 group-hover:scale-115"/>
           <span>New Paste</span>
         </button>
       </div>
