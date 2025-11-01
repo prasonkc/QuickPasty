@@ -2,8 +2,8 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDB } from "@/lib/mongodb";
-// import User from "@/models/lumio";
-// import bcrypt from "bcryptjs";
+import User from "@/models/lumio";
+import bcrypt from "bcryptjs";
 
 declare module "next-auth" {
   interface Session {
