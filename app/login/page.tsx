@@ -15,10 +15,10 @@ const Login = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if(status == "authenticated")
-      router.push("/")
-  }, [])
-  
+    if (status === "authenticated" && session) {
+      router.push("/");
+    }
+  }, [status, session, router]);
 
   const handleSubmit = async () => {
 
@@ -31,8 +31,10 @@ const Login = () => {
 
       if(result?.error){
         console.log("error")
+      } else if(result?.ok){
+        router.push("/")
       }
-      router.push("/") //Try pushing in useeffect
+
     } else {
       await fetch("/api/register", {
         method: "POST",
