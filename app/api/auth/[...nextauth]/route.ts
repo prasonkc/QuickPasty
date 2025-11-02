@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDB } from "@/lib/mongodb";
-import User from "@/models/quicklinky";
+import User from "@/models/quickpasty";
 import bcrypt from "bcryptjs";
 
 declare module "next-auth" {

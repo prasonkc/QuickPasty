@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import User from "@/models/quicklinky"
+import User from "@/models/quickpasty"
 import { connectToDB } from "@/lib/mongodb";
 
 export async function POST(req: Request, res: NextResponse) {
@@ -19,8 +19,7 @@ export async function POST(req: Request, res: NextResponse) {
         const hashedPassword = await bcrypt.hash(password, 11);
         const newUser = new User({ username: username, email: email, password: hashedPassword })
         await newUser.save();
-
-        NextResponse.json({ message: "Registration successful" }, { status: 201 })
+        return NextResponse.json({ message: "Registration successful" }, { status: 201 })
     } catch (e: any) {
         console.error("Registration error", e)
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

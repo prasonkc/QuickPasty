@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface QuickLinkyUser extends Document {
+export interface QuickPasty extends Document {
     _id: string
     username?: string;
     email: string;
@@ -8,7 +8,7 @@ export interface QuickLinkyUser extends Document {
     pastes?: string[];
 }
 
-const QuickLinkyUserSchema = new Schema<QuickLinkyUser>(
+const QuickPastySchema = new Schema<QuickPasty>(
     {
         username: { type: String, unique: true, sparse: true },
         email: { type: String, required: true, unique: true },
@@ -18,7 +18,7 @@ const QuickLinkyUserSchema = new Schema<QuickLinkyUser>(
     { timestamps: true }
 );
 
-const User: Model<QuickLinkyUser> =
-    mongoose.models.QuickLinkyUser || mongoose.model<QuickLinkyUser>("QuickLinkyUser", QuickLinkyUserSchema);
+const User: Model<QuickPasty> =
+    mongoose.models.QuickPasty || mongoose.model<QuickPasty>("QuickPasty", QuickPastySchema);
 
 export default User;

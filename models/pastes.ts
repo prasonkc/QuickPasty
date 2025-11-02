@@ -13,7 +13,7 @@ export interface Paste extends Document {
 const PasteSchema = new Schema<Paste>(
   {
     paste_id: { type: String, required: true, unique: true },
-    user: { type: Schema.Types.ObjectId, ref: "QuickLinkyUser", required: true }, 
+    user: { type: Schema.Types.ObjectId, ref: "QuickPastyUser", required: true }, 
     paste_title: { type: String, required: true },
     paste_content: { type: String, required: true },
     is_private: { type: Boolean, default: true },
