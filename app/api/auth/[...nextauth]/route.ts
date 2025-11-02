@@ -54,6 +54,19 @@ const authOptions: NextAuthOptions = {
         };
       },
     }),
+    // CredentialsProvider({
+    //   name: "Guest",
+    //   credentials: {},
+    //   async authorize(credentials) {
+    //     const timestamp = Date.now();
+    //     const randomId = Math.floor(Math.random() * 1000000);
+    //     return {
+    //       id: `guest_${timestamp}_${randomId}`,
+    //       name: "Guest User",
+    //       email: null
+    //     }
+    //   }
+    // })
   ],
   callbacks: {
     // Save id to token when signing in
@@ -72,6 +85,7 @@ const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
+  
 };
 
 const handler = NextAuth(authOptions);

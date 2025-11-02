@@ -141,7 +141,9 @@ const Login = () => {
 
           {/* Links */}
           <div className="mt-4 flex flex-col gap-2 text-center text-sm text-gray-400">
-            <span className="hover:text-indigo-400 cursor-pointer hover:underline">
+            <span className="hover:text-indigo-400 cursor-pointer hover:underline"
+            onClick={() => {signIn("Guest")}}
+            >
               Continue as guest
             </span>
             <span
