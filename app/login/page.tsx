@@ -4,6 +4,27 @@ import { Github, Chrome } from "lucide-react";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    if(isLogin){
+      console.log("Login")
+    }
+    else{
+      await fetch("/api/register", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({username: username, email: email, password: password})
+      }).then(res => res.json())
+      .then((data) => {
+        console.log(data.message)
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -25,7 +46,8 @@ const Login = () => {
               name="username"
               required
               placeholder="Enter your username"
-              className="block w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline outline-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500 focus:bg-white/10 transition-all"
+              className="block w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500 focus:bg-white/10 transition-all"
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
         )}
@@ -38,7 +60,8 @@ const Login = () => {
             name="email"
             required
             placeholder="Enter your email address"
-            className="block w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline outline-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500 focus:bg-white/10 transition-all"
+            className="block w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500 focus:bg-white/10 transition-all"
+            onChange={(e) => {setEmail(e.target.value)}}
           />
         </div>
 
@@ -50,7 +73,8 @@ const Login = () => {
             name="password"
             required
             placeholder="Enter your password"
-            className="block w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline outline-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500 focus:bg-white/10 transition-all"
+            className="block w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500 focus:bg-white/10 transition-all"
+            onChange={(e) => {setPassword(e.target.value)}}
           />
         </div>
 
@@ -58,15 +82,16 @@ const Login = () => {
         <button
           type="submit"
           className="w-full rounded-md bg-indigo-600 py-2 text-sm font-semibold hover:bg-indigo-500 transition-all cursor-pointer shadow-md hover:shadow-indigo-500/30"
+          onClick={handleSubmit}
         >
           {isLogin ? "Login" : "Signup"}
         </button>
 
         {/* Divider */}
         <div className="flex items-center justify-center gap-2 text-gray-500 text-sm my-2">
-          <div className="h-[1px] w-1/3 bg-white/10"></div>
+          <div className="w-1/3 bg-white/10"></div>
           <span>or</span>
-          <div className="h-[1px] w-1/3 bg-white/10"></div>
+          <div className="w-1/3 bg-white/10"></div>
         </div>
 
         {/* Other auth providers */}

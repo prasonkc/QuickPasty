@@ -2,17 +2,17 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface QuickLinkyUser extends Document {
     _id: string
+    username?: string;
     email: string;
     password: string;
-    username?: string;
     pastes?: string[];
 }
 
 const QuickLinkyUserSchema = new Schema<QuickLinkyUser>(
     {
+        username: { type: String, unique: true, sparse: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        username: { type: String, unique: true, sparse: true },
         pastes: [{ type: Schema.Types.ObjectId, ref: "Paste" }],
     },
     { timestamps: true }
