@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState, useEffect } from "react";
 import { Github, Chrome } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { SessionProvider } from "next-auth/react";
+import { signIn,SessionProvider } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,9 +12,27 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const { data: session, status } = useSession();
+  const router = useRouter()
+
+  useEffect(() => {
+    if(status == "authenticated")
+      router.push("/")
+  }, [])
+  
 
   const handleSubmit = async () => {
+
     if (isLogin) {
+      const result = await signIn("credentials", {
+        redirect:false,
+        email: email,
+        password: password
+      })
+
+      if(result?.error){
+        console.log("error")
+      }
+      router.push("/") //Try pushing in useeffect
     } else {
       await fetch("/api/register", {
         method: "POST",
