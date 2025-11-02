@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDB } from "@/lib/mongodb";
-import User from "@/models/lumio";
+import User from "@/models/quicklinky";
 import bcrypt from "bcryptjs";
 
 declare module "next-auth" {
@@ -42,10 +42,10 @@ const authOptions: NextAuthOptions = {
         await connectToDB();
 
         const user = await User.findOne({ email: credentials?.email });
-        if (!user) throw new Error("No user found");
+        if (!user) throw new Error("Invalid Username or Password");
 
         const isValid = await bcrypt.compare(credentials!.password, user.password);
-        if (!isValid) throw new Error("Invalid password");
+        if (!isValid || !user) throw new Error("Invalid Username or Password");
 
         return {
           id: user._id.toString(),
@@ -56,13 +56,13 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    // ⬇️ Save id to token when signing in
+    // Save id to token when signing in
     async jwt({ token, user }) {
       if (user) token.id = user.id;
       return token;
     },
 
-    // ⬇️ Copy id from token to session
+    // Copy id from token to session
     async session({ session, token }) {
       if (token?.id) session.user.id = token.id;
       return session;
