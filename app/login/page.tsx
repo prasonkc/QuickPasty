@@ -1,7 +1,7 @@
 "use client";
 import React, { MouseEventHandler, useState, useEffect } from "react";
 import { Github, Chrome } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { signIn, SessionProvider } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -51,6 +51,10 @@ const Login = () => {
           console.log(error);
         });
     }
+  };
+  
+  const handleOAuthLogin = async (provider: "github" | "google") => {
+    await signIn(provider, { redirect: false });
   };
 
   return (
@@ -127,34 +131,16 @@ const Login = () => {
 
         {/* Other auth providers */}
         <div className="flex items-center justify-center gap-3">
-            <button
+          <button
             className="flex items-center gap-2 rounded-md bg-white/5 px-4 py-2 hover:bg-white/10 transition cursor-pointer border border-white/10 hover:border-indigo-500/40"
-            onClick={async () => {
-              const result = await signIn("github");
-              if (result?.ok) {
-
-              if (session?.user) {
-                setEmail(session.user.email || "");
-                setUsername(session.user.name || "");
-              }
-              router.push("/");
-              }
-            }}
-            >
+            onClick={() => {handleOAuthLogin('github')}}
+          >
             <Github className="w-5 h-5" />
             <span>GitHub</span>
           </button>
-          <button className="flex items-center gap-2 rounded-md bg-white/5 px-4 py-2 hover:bg-white/10 transition cursor-pointer border border-white/10 hover:border-indigo-500/40"
-          onClick={async () => {
-            const result = await signIn("google")
-
-            if (result?.ok){
-              if(session?.user){
-                setEmail(session.user.email || "");
-                setUsername(session.user.name || "")
-              }
-            }
-          }}
+          <button
+            className="flex items-center gap-2 rounded-md bg-white/5 px-4 py-2 hover:bg-white/10 transition cursor-pointer border border-white/10 hover:border-indigo-500/40"
+            onClick={() => {handleOAuthLogin('google')}}
           >
             <Chrome className="w-5 h-5" />
             <span>Google</span>

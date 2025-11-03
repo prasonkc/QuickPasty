@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDB } from "@/lib/mongodb";
 import User from "@/models/quickpasty";
+import UserOAuth from "@/models/provider";
 import bcrypt from "bcryptjs";
 
 declare module "next-auth" {
@@ -86,6 +87,26 @@ const authOptions: NextAuthOptions = {
       if (token?.id) session.user.id = token.id;
       return session;
     },
+  async signIn({ user, account, profile }) {
+    // handle OAuth save to database
+    if (account?.provider === "google" || account?.provider === "github") {
+      await connectToDB();
+
+      const email = user.email || (profile as any)?.email;
+      const name = user.name || (profile as any)?.name;
+      const providerId = (profile as any)?.id || (profile as any)?.sub || account.providerAccountId;
+
+      await UserOAuth.findOneAndUpdate(
+        email ? { email } : { provider: account.provider, providerId },
+        {
+          $setOnInsert: { provider: account.provider },
+          $set: { name, email, providerId },
+        },
+        { new: true, upsert: true }
+      );
+    }
+    return true;
+  },
   },
 
   session: { strategy: "jwt" },
