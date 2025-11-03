@@ -144,7 +144,18 @@ const Login = () => {
             <Github className="w-5 h-5" />
             <span>GitHub</span>
           </button>
-          <button className="flex items-center gap-2 rounded-md bg-white/5 px-4 py-2 hover:bg-white/10 transition cursor-pointer border border-white/10 hover:border-indigo-500/40">
+          <button className="flex items-center gap-2 rounded-md bg-white/5 px-4 py-2 hover:bg-white/10 transition cursor-pointer border border-white/10 hover:border-indigo-500/40"
+          onClick={async () => {
+            const result = await signIn("google")
+
+            if (result?.ok){
+              if(session?.user){
+                setEmail(session.user.email || "");
+                setUsername(session.user.name || "")
+              }
+            }
+          }}
+          >
             <Chrome className="w-5 h-5" />
             <span>Google</span>
           </button>
