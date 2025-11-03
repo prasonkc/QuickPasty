@@ -22,7 +22,7 @@ const Login = () => {
 
   const handleSubmit = async () => {
     if (isLogin) {
-      const result = await signIn("credentials", {
+      const result = await signIn("email-password", {
         redirect: false,
         email: email,
         password: password,
@@ -155,7 +155,7 @@ const Login = () => {
           <span
             className="hover:text-indigo-400 cursor-pointer hover:underline"
             onClick={() => {
-              signIn("Guest");
+              signIn("guest");
             }}
           >
             Continue as guest

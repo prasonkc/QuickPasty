@@ -33,6 +33,7 @@ const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET!,
     }),
     CredentialsProvider({
+      id: "email-password",
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -54,19 +55,19 @@ const authOptions: NextAuthOptions = {
         };
       },
     }),
-    // CredentialsProvider({
-    //   name: "Guest",
-    //   credentials: {},
-    //   async authorize(credentials) {
-    //     const timestamp = Date.now();
-    //     const randomId = Math.floor(Math.random() * 1000000);
-    //     return {
-    //       id: `guest_${timestamp}_${randomId}`,
-    //       name: "Guest User",
-    //       email: null
-    //     }
-    //   }
-    // })
+    CredentialsProvider({
+      id: "guest",
+      name: "Guest",
+      credentials: {},
+      async authorize(credentials) {
+        const { v4: uuidv4 } = require('uuid');
+        return {
+          id: `guest_${uuidv4()}`,
+          name: "Guest User",
+          email: null
+        };
+      }
+    })
   ],
   callbacks: {
     // Save id to token when signing in
@@ -85,7 +86,7 @@ const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
-  
+
 };
 
 const handler = NextAuth(authOptions);
