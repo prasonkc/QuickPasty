@@ -15,7 +15,7 @@ import PasteComponent from "./PasteComponent"
 
 const PasteUI = () => {
   return (
-    <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full h-[97vh]">
+    <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full h-[97vh] hidden md:flex flex-col">
       {/* icon */}
       <div className="text-2xl font-bold mx-3">
         <span>QuickPasty</span>
