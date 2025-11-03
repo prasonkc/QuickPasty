@@ -1,5 +1,6 @@
 import React from "react";
 import { Edit, Copy, Share } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 const PasteContent = () => {
   return (
@@ -14,9 +15,9 @@ const PasteContent = () => {
         />
 
         <div className="flex gap-7 items-center mr-5">
-          <Edit className="cursor-pointer transition-all hover:scale-110"/>
-          <Copy className="cursor-pointer transition-all hover:scale-110"/>
-          <Share className="cursor-pointer transition-all hover:scale-110"/>
+          <Edit className="cursor-pointer transition-all hover:scale-110" />
+          <Copy className="cursor-pointer transition-all hover:scale-110" />
+          <Share className="cursor-pointer transition-all hover:scale-110" />
         </div>
       </div>
 
@@ -24,13 +25,21 @@ const PasteContent = () => {
       <div className="my-3 h-0.5 w-full bg-border mx-auto"></div>
 
       {/* Description */}
-      <div className="mx-3">
+      <div className="mx-3 relative">
         <textarea
           placeholder="Your text here..."
           disabled
           className="w-full resize-none text-white p-2 outline-none"
           rows={30}
         />
+        <button
+          className="absolute bottom-2 right-2 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg hover:border-red-500 transition-colors cursor-pointer"
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
