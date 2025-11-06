@@ -1,24 +1,29 @@
 import React from "react";
 import { Trash2 } from "lucide-react";
+import { Paste } from "../types";
 
 interface PasteComponentProps{
-  title: string,
-  desc: string
+  paste: Paste;
+  onDelete: (id: string) => void;
 }
 
-const PasteComponent: React.FC<PasteComponentProps>  =  ({title, desc}) => {
+const PasteComponent: React.FC<PasteComponentProps>  =  ({paste, onDelete}) => {
   return (
     <div className="border border-gray-700 rounded-lg h-20 px-4 py-3 cursor-pointer mb-3 hover:bg-card-2 transition-all hover:scale-105">
       {/* title */}
       <div className="font-bold text-lg flex items-center justify-between pr-2">
-        <span>{title}</span>
+        <span>{paste.title}</span>
         <Trash2
           size={18}
           className="transition-all hover:scale-115 duration-100"
+          onClick={(e) => {
+            e.stopPropagation()
+            onDelete(paste.id)
+          }} 
         />
       </div>
       {/* desc */}
-      <div className="text-sm">{desc}</div>
+      <div className="text-sm">{paste.content.slice(0, 26) + "..."}</div>
     </div>
   );
 };

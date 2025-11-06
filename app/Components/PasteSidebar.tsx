@@ -18,6 +18,11 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes }) => {
     };
     setPastes([...pastes, newPaste]);
   }
+
+  function handleDelete(id: string) {
+    setPastes(pastes.filter((paste) => paste.id !== id))
+  }
+
   return (
     <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full hidden md:flex flex-col">
       {/* icon */}
@@ -30,7 +35,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes }) => {
         <button
           className="group flex mx-auto items-center gap-3 p-4 w-full justify-center cursor-pointer transition-all hover:scale-110"
           onClick={() => {
-            addPaste("New Paste", "New Paste Desc");
+            addPaste("Edit your title", "Edit your content");
           }}
         >
           <Plus
@@ -48,8 +53,8 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes }) => {
         {pastes.map((paste) => (
           <PasteComponent
             key={paste.id}
-            title={paste.title}
-            desc={paste.content.slice(0, 30)}
+            paste={paste}
+            onDelete={handleDelete}
           />
         ))}
       </div>
