@@ -12,8 +12,12 @@ import PasteComponent from "./PasteComponent"
 //   pastes: paste[],
 // }
 
+interface PasteUIprops {
+  title: string,
+  desc: string
+}
 
-const PasteUI = () => {
+const PasteUI: React.FC<PasteUIprops> = ({title, desc}) => {
   return (
     <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full h-[97vh] hidden md:flex flex-col">
       {/* icon */}
@@ -33,9 +37,7 @@ const PasteUI = () => {
       <div className="my-10 h-0.5 w-full bg-border mx-auto"></div>
       {/* pastes */}
       <div className="paste-container ">
-        <PasteComponent />
-        <PasteComponent />
-        <PasteComponent />
+        <PasteComponent title={title} desc={desc}/>
       </div>
     </div>
   );
