@@ -5,11 +5,13 @@ import { Paste } from "../types";
 interface PasteComponentProps{
   paste: Paste;
   onDelete: (id: string) => void;
+  setActivePasteID: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const PasteComponent: React.FC<PasteComponentProps>  =  ({paste, onDelete}) => {
+const PasteComponent: React.FC<PasteComponentProps>  =  ({paste, onDelete, setActivePasteID}) => {
   return (
-    <div className="border border-gray-700 rounded-lg h-20 px-4 py-3 cursor-pointer mb-3 hover:bg-card-2 transition-all hover:scale-105">
+    <div className="border border-gray-700 rounded-lg h-20 px-4 py-3 cursor-pointer mb-3 hover:bg-card-2 transition-all hover:scale-105" onClick={() => {setActivePasteID(paste.id)}}
+    >
       {/* title */}
       <div className="font-bold text-lg flex items-center justify-between pr-2">
         <span>{paste.title}</span>

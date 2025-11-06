@@ -7,9 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 interface PasteSidebarprops {
   pastes: Paste[];
   setPastes: React.Dispatch<React.SetStateAction<Paste[]>>;
+  setActivePasteID: React.Dispatch<React.SetStateAction<string>>
 }
 
-const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes }) => {
+const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes, setActivePasteID }) => {
   function addPaste(title: string, content: string) {
     const newPaste: Paste = {
       id: uuidv4(),
@@ -55,6 +56,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes }) => {
             key={paste.id}
             paste={paste}
             onDelete={handleDelete}
+            setActivePasteID={setActivePasteID}
           />
         ))}
       </div>

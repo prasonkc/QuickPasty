@@ -11,9 +11,7 @@ export default function Home() {
   const router = useRouter();
 
   const [pastes, setPastes] = useState<Paste[]>([])
-
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
+  const [activePasteID, setActivePasteID] = useState<string>("")
 
   useEffect(() => {
     if (!session) {
@@ -23,12 +21,11 @@ export default function Home() {
 
   return (
     <div className="flex">
-      <PasteUi pastes={pastes} setPastes = {setPastes}/>
+      <PasteUi pastes={pastes} setPastes = {setPastes} setActivePasteID={setActivePasteID}/>
       <PasteContent
-        title={title}
-        desc={desc}
-        setTitle={setTitle}
-        setDesc={setDesc}
+        pastes = {pastes}
+        setPastes = {setPastes}
+        activePasteID = {activePasteID}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import { Edit, Copy, Share } from "lucide-react";
 import { signOut } from "next-auth/react";
 import StatusPopup from "./StatusPopup";
@@ -7,21 +7,31 @@ import { Paste } from "../types";
 function handleShare() {}
 
 interface PasteContentProps {
-  title: string;
-  desc: string;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  setDesc: React.Dispatch<React.SetStateAction<string>>;
+  activePasteID: string;
+  pastes: Paste[];
+  setPastes: React.Dispatch<SetStateAction<Paste[]>>;
 }
 
 const PasteContent: React.FC<PasteContentProps> = ({
-  title,
-  desc,
-  setTitle,
-  setDesc,
+  activePasteID,
+  pastes,
+  setPastes,
 }) => {
   const [editable, setEditable] = useState(false);
   const [copied, setCopied] = useState(false);
   const inputTitleRef = useRef<HTMLInputElement>(null);
+
+  const updatePaste = (id: string, updatedFields: Partial<Paste>) => {
+    setPastes((prev) =>
+      prev.map((paste) =>
+        paste.id === id ? { ...paste, ...updatedFields } : paste
+      )
+    );
+  };
+
+    const findPaste = (id: string) => {
+      return pastes.find((paste) => paste.id === id);
+  };
 
   useEffect(() => {
     const title = document.getElementById("title");
@@ -48,8 +58,9 @@ const PasteContent: React.FC<PasteContentProps> = ({
           className="font-bold text-2xl flex items-center mx-3 my-2 outline-none w-full"
           required
           onChange={(e) => {
-            setTitle(e.target.value);
+            updatePaste(activePasteID, { title: e.target.value });
           }}
+          value={findPaste(activePasteID)?.title || ""}
           id="title"
         />
 
@@ -63,7 +74,12 @@ const PasteContent: React.FC<PasteContentProps> = ({
           <Copy
             className="cursor-pointer transition-all hover:scale-110"
             onClick={() => {
-              const copy = "Title: " + title + "\n" + "Description: " + desc;
+              const copy =
+                "Title: " +
+                findPaste(activePasteID)?.title +
+                "\n" +
+                "Description: " +
+                findPaste(activePasteID)?.title;
               navigator.clipboard.writeText(copy);
               setCopied(true);
 
@@ -93,7 +109,8 @@ const PasteContent: React.FC<PasteContentProps> = ({
           disabled
           className="w-full resize-none text-white p-2 outline-none"
           rows={30}
-          onChange={(e) => setDesc(e.target.value)}
+          onChange={(e) => {updatePaste(activePasteID, { content: e.target.value })}}
+          value={findPaste(activePasteID)?.content || ""}
         />
         <button
           className="absolute bottom-2 right-2 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg hover:border-red-500 transition-colors cursor-pointer"
