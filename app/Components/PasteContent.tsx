@@ -29,9 +29,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
     );
   };
 
-    const findPaste = (id: string) => {
-      return pastes.find((paste) => paste.id === id);
-  };
+    const activePaste = pastes.find((paste) => paste.id === activePasteID);
 
   useEffect(() => {
     const title = document.getElementById("title");
@@ -60,7 +58,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
           onChange={(e) => {
             updatePaste(activePasteID, { title: e.target.value });
           }}
-          value={findPaste(activePasteID)?.title || ""}
+          value={activePaste?.title || ""}
           id="title"
         />
 
@@ -76,10 +74,10 @@ const PasteContent: React.FC<PasteContentProps> = ({
             onClick={() => {
               const copy =
                 "Title: " +
-                findPaste(activePasteID)?.title +
+                activePaste?.title +
                 "\n" +
                 "Description: " +
-                findPaste(activePasteID)?.title;
+                activePaste?.title;
               navigator.clipboard.writeText(copy);
               setCopied(true);
 
@@ -110,7 +108,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
           className="w-full resize-none text-white p-2 outline-none"
           rows={30}
           onChange={(e) => {updatePaste(activePasteID, { content: e.target.value })}}
-          value={findPaste(activePasteID)?.content || ""}
+          value={activePaste?.content || ""}
         />
         <button
           className="absolute bottom-2 right-2 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg hover:border-red-500 transition-colors cursor-pointer"

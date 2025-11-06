@@ -8,9 +8,10 @@ interface PasteSidebarprops {
   pastes: Paste[];
   setPastes: React.Dispatch<React.SetStateAction<Paste[]>>;
   setActivePasteID: React.Dispatch<React.SetStateAction<string>>
+  activePasteID: string
 }
 
-const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes, setActivePasteID }) => {
+const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes, setActivePasteID, activePasteID }) => {
   function addPaste(title: string, content: string) {
     const newPaste: Paste = {
       id: uuidv4(),
@@ -53,10 +54,11 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes, setActiv
       <div className="paste-container ">
         {pastes.map((paste) => (
           <PasteComponent
-            key={paste.id}
-            paste={paste}
-            onDelete={handleDelete}
-            setActivePasteID={setActivePasteID}
+          key={paste.id}
+          paste={paste}
+          onDelete={handleDelete}
+          activePasteID = {activePasteID}
+          setActivePasteID={setActivePasteID}
           />
         ))}
       </div>

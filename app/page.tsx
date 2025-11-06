@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div className="flex">
-      <PasteUi pastes={pastes} setPastes = {setPastes} setActivePasteID={setActivePasteID}/>
+      <PasteUi pastes={pastes} setPastes = {setPastes} activePasteID={activePasteID} setActivePasteID={setActivePasteID}/>
       <PasteContent
         pastes = {pastes}
         setPastes = {setPastes}
