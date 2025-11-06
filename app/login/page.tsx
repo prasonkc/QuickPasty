@@ -13,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const [statusComponent, setStatusComponent] = useState("");
+  const [statusBool, setStatusBool] = useState(false);
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -37,7 +38,10 @@ const Login = () => {
 
       if (result?.error) {
         setStatusComponent(result?.error);
+        setStatusBool(false)
       } else if (result?.ok) {
+        setStatusComponent("Login Sucessful")
+        setStatusBool(true)
         router.push("/");
       }
     } else {
@@ -52,10 +56,12 @@ const Login = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data.message);
+          setStatusComponent(data.message);
+          setStatusBool(true)
         })
         .catch((error) => {
           setStatusComponent(error);
+          setStatusBool(false)
         });
     }
   };
@@ -67,7 +73,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       {statusComponent && (
-        <StatusPopup status={statusComponent} stbool={false} />
+        <StatusPopup status={statusComponent} stbool={statusBool} />
       )}
       <div className="bg-white/10 backdrop-blur-xl w-[400px] flex flex-col gap-5 p-8 rounded-2xl shadow-2xl text-white border border-white/10">
         {/* Title */}
