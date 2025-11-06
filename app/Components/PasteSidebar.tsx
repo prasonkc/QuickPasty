@@ -8,18 +8,18 @@ import PasteComponent from "./PasteComponent"
 //   paste_content: string
 // }
 
-// interface PasteUIProps{
+// interface PasteSidebarProps{
 //   pastes: paste[],
 // }
 
-interface PasteUIprops {
+interface PasteSidebarprops {
   title: string,
   desc: string
 }
 
-const PasteUI: React.FC<PasteUIprops> = ({title, desc}) => {
+const PasteSidebar: React.FC<PasteSidebarprops> = ({title, desc}) => {
   return (
-    <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full h-[97vh] hidden md:flex flex-col">
+    <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full hidden md:flex flex-col">
       {/* icon */}
       <div className="text-2xl font-bold mx-3">
         <span>QuickPasty</span>
@@ -43,4 +43,4 @@ const PasteUI: React.FC<PasteUIprops> = ({title, desc}) => {
   );
 };
 
-export default PasteUI;
+export default PasteSidebar;

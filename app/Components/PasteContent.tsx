@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Edit, Copy, Share } from "lucide-react";
 import { signOut } from "next-auth/react";
+import StatusPopup from "./StatusPopup";
 
 function handleShare() {}
 
@@ -18,11 +19,12 @@ const PasteContent: React.FC<PasteContentProps> = ({
   setDesc,
 }) => {
   const [editable, setEditable] = useState(false);
+  const [copied, setCopied] = useState(false);
   const inputTitleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const title = document.getElementById("title");
-    const desc = document.getElementById("desc")
+    const desc = document.getElementById("desc");
     if (editable) {
       title?.removeAttribute("disabled");
       desc?.removeAttribute("disabled");
@@ -34,7 +36,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
   }, [editable]);
 
   return (
-    <div className="w-full bg-card ml-0 m-3 rounded-2xl p-3">
+    <div className="w-full bg-card ml-0 m-3 rounded-2xl min-h-full p-3">
       {/* Title */}
       <div className="flex items-center justify-around">
         <input
@@ -55,7 +57,6 @@ const PasteContent: React.FC<PasteContentProps> = ({
             className="cursor-pointer transition-all hover:scale-110"
             onClick={() => {
               setEditable(!editable);
-              console.log(editable)
             }}
           />
           <Copy
@@ -63,8 +64,16 @@ const PasteContent: React.FC<PasteContentProps> = ({
             onClick={() => {
               const copy = "Title: " + title + "\n" + "Description: " + desc;
               navigator.clipboard.writeText(copy);
+              setCopied(true);
+
+              setTimeout(() => {
+                setCopied(false);
+              }, 3000);
             }}
           />
+
+          {copied && <StatusPopup status="Copied!" stbool={true} />}
+          {}
           <Share
             className="cursor-pointer transition-all hover:scale-110"
             onClick={handleShare}
