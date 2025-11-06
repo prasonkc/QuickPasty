@@ -1,13 +1,23 @@
 import React from "react";
 import { Plus } from "lucide-react";
-import PasteComponent from "./PasteComponent"
+import PasteComponent from "./PasteComponent";
 import { Paste } from "../types";
+import { v4 as uuidv4 } from "uuid";
 
 interface PasteSidebarprops {
-  pastes: Paste[]
+  pastes: Paste[];
+  setPastes: React.Dispatch<React.SetStateAction<Paste[]>>;
 }
- 
-const PasteSidebar: React.FC<PasteSidebarprops> = ({pastes}) => {
+
+const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes }) => {
+  function addPaste(title: string, content: string) {
+    const newPaste: Paste = {
+      id: uuidv4(),
+      title: title,
+      content: content,
+    };
+    setPastes([...pastes, newPaste]);
+  }
   return (
     <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full hidden md:flex flex-col">
       {/* icon */}
@@ -17,8 +27,16 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({pastes}) => {
 
       {/* New paste button */}
       <div className="text-lg font-extrabold mt-8 bg-primary w-full hover:bg-[#5345ee] rounded-lg">
-        <button className="group flex mx-auto items-center gap-3 p-4 w-full justify-center cursor-pointer transition-all hover:scale-110">
-          <Plus size={20} className="transition-all duration-100 ease-in group-hover:rotate-45 group-hover:scale-115"/>
+        <button
+          className="group flex mx-auto items-center gap-3 p-4 w-full justify-center cursor-pointer transition-all hover:scale-110"
+          onClick={() => {
+            addPaste("New Paste", "New Paste Desc");
+          }}
+        >
+          <Plus
+            size={20}
+            className="transition-all duration-100 ease-in group-hover:rotate-45 group-hover:scale-115"
+          />
           <span>New Paste</span>
         </button>
       </div>
@@ -28,7 +46,11 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({pastes}) => {
       {/* pastes */}
       <div className="paste-container ">
         {pastes.map((paste) => (
-          <PasteComponent key={paste.title}title={paste.title} desc={paste.content}/>
+          <PasteComponent
+            key={paste.id}
+            title={paste.title}
+            desc={paste.content.slice(0, 30)}
+          />
         ))}
       </div>
     </div>

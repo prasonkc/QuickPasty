@@ -8,7 +8,7 @@ interface PasteComponentProps{
 
 const PasteComponent: React.FC<PasteComponentProps>  =  ({title, desc}) => {
   return (
-    <div className="border border-gray-700 rounded-lg h-20 p-2 cursor-pointer mb-3 hover:bg-card-2 transition-all hover:scale-105">
+    <div className="border border-gray-700 rounded-lg h-20 px-4 py-3 cursor-pointer mb-3 hover:bg-card-2 transition-all hover:scale-105">
       {/* title */}
       <div className="font-bold text-lg flex items-center justify-between pr-2">
         <span>{title}</span>

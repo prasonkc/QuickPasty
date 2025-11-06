@@ -7,21 +7,10 @@ import { useRouter } from "next/navigation";
 import { Paste } from "./types";
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
-  const pastes: Paste[] = [
-    {
-      id: 1,
-      title: "New Paste",
-      content: "Hello this is new paste",
-    },
-    {
-      id: 2,
-      title: "Newwww Paste 2",
-      content: "Hewwo this is newwww pawwsteee",
-    },
-  ];
+  const [pastes, setPastes] = useState<Paste[]>([])
 
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -34,7 +23,7 @@ export default function Home() {
 
   return (
     <div className="flex">
-      <PasteUi pastes={pastes} />
+      <PasteUi pastes={pastes} setPastes = {setPastes}/>
       <PasteContent
         title={title}
         desc={desc}
