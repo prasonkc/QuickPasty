@@ -1,9 +1,10 @@
 "use client";
-import React, { MouseEventHandler, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Github, Chrome } from "lucide-react";
-import { getSession, useSession } from "next-auth/react";
-import { signIn, SessionProvider } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import StatusPopup from "../Components/StatusPopup";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,8 +12,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [statusComponent, setStatusComponent] = useState("");
+
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  setTimeout(() => {
+    setStatusComponent("");
+  }, 3000);
 
   useEffect(() => {
     if (status === "authenticated" && session) {
@@ -29,7 +36,7 @@ const Login = () => {
       });
 
       if (result?.error) {
-        console.log("error");
+        setStatusComponent(result?.error);
       } else if (result?.ok) {
         router.push("/");
       }
@@ -48,17 +55,20 @@ const Login = () => {
           console.log(data.message);
         })
         .catch((error) => {
-          console.log(error);
+          setStatusComponent(error);
         });
     }
   };
-  
+
   const handleOAuthLogin = async (provider: "github" | "google") => {
     await signIn(provider, { redirect: false });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center">
+      {statusComponent && (
+        <StatusPopup status={statusComponent} stbool={false} />
+      )}
       <div className="bg-white/10 backdrop-blur-xl w-[400px] flex flex-col gap-5 p-8 rounded-2xl shadow-2xl text-white border border-white/10">
         {/* Title */}
         <h2 className="text-2xl font-semibold text-center mb-2">
@@ -133,14 +143,18 @@ const Login = () => {
         <div className="flex items-center justify-center gap-3">
           <button
             className="flex items-center gap-2 rounded-md bg-white/5 px-4 py-2 hover:bg-white/10 transition cursor-pointer border border-white/10 hover:border-indigo-500/40"
-            onClick={() => {handleOAuthLogin('github')}}
+            onClick={() => {
+              handleOAuthLogin("github");
+            }}
           >
             <Github className="w-5 h-5" />
             <span>GitHub</span>
           </button>
           <button
             className="flex items-center gap-2 rounded-md bg-white/5 px-4 py-2 hover:bg-white/10 transition cursor-pointer border border-white/10 hover:border-indigo-500/40"
-            onClick={() => {handleOAuthLogin('google')}}
+            onClick={() => {
+              handleOAuthLogin("google");
+            }}
           >
             <Chrome className="w-5 h-5" />
             <span>Google</span>

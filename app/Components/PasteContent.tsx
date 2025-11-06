@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Edit, Copy, Share } from "lucide-react";
 import { signOut } from "next-auth/react";
 import StatusPopup from "./StatusPopup";
+import { Paste } from "../types";
 
 function handleShare() {}
 
