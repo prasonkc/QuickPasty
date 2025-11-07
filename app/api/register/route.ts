@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "@/models/quickpasty"
 import { connectToDB } from "@/lib/mongodb";
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
     try {
         const { username, email, password } = await req.json()
         if (!email || !password) {
@@ -20,8 +20,7 @@ export async function POST(req: Request, res: NextResponse) {
         const newUser = new User({ username: username, email: email, password: hashedPassword })
         await newUser.save();
         return NextResponse.json({ message: "Registration successful" }, { status: 201 })
-    } catch (e: any) {
-        console.error("Registration error", e)
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    } catch (e) {
+        return NextResponse.json({ error: e }, { status: 500 });
     }
 }
