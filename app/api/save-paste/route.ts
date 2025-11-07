@@ -1,23 +1,37 @@
 import Paste from "@/models/pastes";
-import { NextRequest, NextResponse } from "next/server";
+import User from "@/models/quickpasty";
+import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/mongodb";
 
-export async function POST(req: NextRequest) {
-    const {paste_id, paste_title, paste_content, user} = await req.json()
+export async function POST(req: Request) {
+  const { paste_id, paste_title, paste_content } = await req.json();
 
-    await connectToDB()
-    const existingPaste = await Paste.findOne({paste_id})
-    
-    try{
-        if(existingPaste){
-            Paste.findByIdAndUpdate(existingPaste._id, {paste_title: paste_title, paste_content: paste_content, user:user})
-            NextResponse.json({message: "Paste successfully updated"}, {status: 201})
-        } else{
-            const newPaste = new Paste({paste_id: paste_id, paste_title: paste_title, paste_content: paste_content, user:user})
-            await newPaste.save()
-            NextResponse.json({message: "Paste successfully Created"}, {status: 201})
-        }
-    } catch (e) {
-        NextResponse.json({error: e}, {status: 500})
+  await connectToDB();
+  const existingPaste = await Paste.findOne({ paste_id });
+
+  // const user = User.findOne({})
+  try {
+    if (existingPaste) {
+      Paste.findByIdAndUpdate(existingPaste._id, {
+        paste_title: paste_title,
+        paste_content: paste_content,
+      });
+      return NextResponse.json(
+        { message: "Paste successfully updated" },
+        { status: 201 }
+      );
     }
+    const newPaste = new Paste({
+      paste_id: paste_id,
+      paste_title: paste_title,
+      paste_content: paste_content,
+    });
+    await newPaste.save();
+    return NextResponse.json(
+      { message: "Paste successfully Created" },
+      { status: 201 }
+    );
+  } catch (e) {
+    return NextResponse.json({ error: e }, { status: 500 });
+  }
 }

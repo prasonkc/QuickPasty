@@ -3,26 +3,47 @@ import { Plus } from "lucide-react";
 import PasteComponent from "./PasteComponent";
 import { Paste } from "../types";
 import { v4 as uuidv4 } from "uuid";
+import { json } from "stream/consumers";
 
 interface PasteSidebarprops {
   pastes: Paste[];
   setPastes: React.Dispatch<React.SetStateAction<Paste[]>>;
-  setActivePasteID: React.Dispatch<React.SetStateAction<string>>
-  activePasteID: string
+  setActivePasteID: React.Dispatch<React.SetStateAction<string>>;
+  activePasteID: string;
 }
 
-const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes, setActivePasteID, activePasteID }) => {
-  function addPaste(title: string, content: string) {
+const PasteSidebar: React.FC<PasteSidebarprops> = ({
+  pastes,
+  setPastes,
+  setActivePasteID,
+  activePasteID,
+}) => {
+  async function addPaste(title: string, content: string) {
     const newPaste: Paste = {
       id: uuidv4(),
       title: title,
       content: content,
     };
+
     setPastes([...pastes, newPaste]);
+    await fetch("/api/save-paste", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paste_id: newPaste.id,
+        paste_title: newPaste.title,
+        paste_content: newPaste.content,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   function handleDelete(id: string) {
-    setPastes(pastes.filter((paste) => paste.id !== id))
+    setPastes(pastes.filter((paste) => paste.id !== id));
   }
 
   return (
@@ -54,11 +75,11 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({ pastes, setPastes, setActiv
       <div className="paste-container ">
         {pastes.map((paste) => (
           <PasteComponent
-          key={paste.id}
-          paste={paste}
-          onDelete={handleDelete}
-          activePasteID = {activePasteID}
-          setActivePasteID={setActivePasteID}
+            key={paste.id}
+            paste={paste}
+            onDelete={handleDelete}
+            activePasteID={activePasteID}
+            setActivePasteID={setActivePasteID}
           />
         ))}
       </div>
