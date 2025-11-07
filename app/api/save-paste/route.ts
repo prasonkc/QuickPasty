@@ -9,12 +9,10 @@ export async function POST(req: Request) {
   await connectToDB();
   const existingPaste = await Paste.findOne({ paste_id });
 
-
-//   Work on Update
   try {
     if (existingPaste) {
-        console.log(paste_title, paste_content)
-      Paste.findByIdAndUpdate(existingPaste._id, {
+      console.log(paste_title, paste_content)
+      await Paste.findByIdAndUpdate(existingPaste._id, {
         paste_title: paste_title,
         paste_content: paste_content,
         userID: userID,

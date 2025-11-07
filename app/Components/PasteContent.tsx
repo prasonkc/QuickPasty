@@ -48,7 +48,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
 
   const handleEditAndFetch = async () => {
     setEditable(!editable);
-    if (!editable) {
+    if (editable == true) {
       await fetch("/api/save-paste", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

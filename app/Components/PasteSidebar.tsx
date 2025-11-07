@@ -20,7 +20,8 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
 }) => {
     const { data: session } = useSession();
     const userID = session?.user.id
-  async function addPaste(title: string, content: string) {
+
+    async function addPaste(title: string, content: string) {
     const newPaste: Paste = {
       id: uuidv4(),
       title: title,
@@ -29,7 +30,6 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
 
     setPastes([...pastes, newPaste]);
 
-    // Work on update
     await fetch("/api/save-paste", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
