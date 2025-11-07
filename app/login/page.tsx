@@ -18,15 +18,21 @@ const Login = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  setTimeout(() => {
-    setStatusComponent("");
-  }, 3000);
-
   useEffect(() => {
     if (status === "authenticated" && session) {
       router.push("/");
     }
   }, [status, session, router]);
+
+  useEffect(() => {
+    if (statusComponent) {
+      const timer = setTimeout(() => {
+        setStatusComponent("");
+      }, 4000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [statusComponent]);
 
   const handleSubmit = async () => {
     if (isLogin) {
@@ -38,13 +44,26 @@ const Login = () => {
 
       if (result?.error) {
         setStatusComponent(result?.error);
-        setStatusBool(false)
+        setStatusBool(false);
       } else if (result?.ok) {
-        setStatusComponent("Login Sucessful")
-        setStatusBool(true)
+        setStatusComponent("Login Sucessful");
+        setStatusBool(true);
         router.push("/");
       }
     } else {
+      if (!validateEmail(email)) {
+        setStatusComponent("Please enter a valid email");
+        setStatusBool(false);
+        return;
+      }
+      if (!validatePassword(password)) {
+        setStatusComponent(
+          "Password must be at least 8 characters, also include a number and a letter"
+        );
+        setStatusBool(false);
+        return;
+      }
+
       await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,17 +76,27 @@ const Login = () => {
         .then((res) => res.json())
         .then((data) => {
           setStatusComponent(data.message);
-          setStatusBool(true)
+          setStatusBool(true);
         })
         .catch((error) => {
           setStatusComponent(error);
-          setStatusBool(false)
+          setStatusBool(false);
         });
     }
   };
 
   const handleOAuthLogin = async (provider: "github" | "google") => {
     await signIn(provider, { redirect: false });
+  };
+
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return regex.test(password);
   };
 
   return (
