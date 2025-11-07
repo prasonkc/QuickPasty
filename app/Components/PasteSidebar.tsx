@@ -49,6 +49,17 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
 
   async function handleDelete(id: string) {
     setPastes(pastes.filter((paste) => paste.id !== id));
+
+    console.log(activePasteID);
+    await fetch(`/api/delete-paste?id=${id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((e) => {
+        console.log(e);
+      });
     }
 
   return (

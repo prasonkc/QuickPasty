@@ -33,17 +33,6 @@ const PasteComponent: React.FC<PasteComponentProps> = ({
           onClick={async (e) => {
             e.stopPropagation();
             onDelete(paste.id);
-
-            console.log(activePasteID);
-            await fetch(`/api/delete-paste?id=${activePasteID}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-            })
-              .then((res) => res.json())
-              .then((data) => console.log(data))
-              .catch((e) => {
-                console.log(e);
-              });
           }}
         />
       </div>
