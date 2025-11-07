@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import PasteComponent from "./PasteComponent";
 import { Paste } from "../types";
 import { v4 as uuidv4 } from "uuid";
-import { json } from "stream/consumers";
+import { useSession } from "next-auth/react";
 
 interface PasteSidebarprops {
   pastes: Paste[];
@@ -18,6 +18,8 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
   setActivePasteID,
   activePasteID,
 }) => {
+    const { data: session } = useSession();
+    const userID = session?.user.id
   async function addPaste(title: string, content: string) {
     const newPaste: Paste = {
       id: uuidv4(),
@@ -33,6 +35,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
         paste_id: newPaste.id,
         paste_title: newPaste.title,
         paste_content: newPaste.content,
+        userID: userID
       }),
     })
       .then((res) => res.json())
