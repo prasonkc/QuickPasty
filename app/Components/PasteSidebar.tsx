@@ -28,6 +28,8 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
     };
 
     setPastes([...pastes, newPaste]);
+
+    // Work on update
     await fetch("/api/save-paste", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

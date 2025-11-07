@@ -1,6 +1,6 @@
 import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import { Edit, Copy, Share } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import StatusPopup from "./StatusPopup";
 import { Paste } from "../types";
 
@@ -29,7 +29,9 @@ const PasteContent: React.FC<PasteContentProps> = ({
     );
   };
 
-    const activePaste = pastes.find((paste) => paste.id === activePasteID);
+  const activePaste = pastes.find((paste) => paste.id === activePasteID);
+
+  const {data: session} = useSession();
 
   useEffect(() => {
     const title = document.getElementById("title");
@@ -43,6 +45,27 @@ const PasteContent: React.FC<PasteContentProps> = ({
       desc?.setAttribute("disabled", "");
     }
   }, [editable]);
+
+  const handleEditAndFetch = async () => {
+    setEditable(!editable);
+    if (!editable) {
+      await fetch("/api/save-paste", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paste_id: activePaste?.id,
+          paste_title: activePaste?.title,
+          paste_content: activePaste?.content,
+          userID: session?.user.id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
 
   return (
     <div className="w-full bg-card ml-0 m-3 rounded-2xl min-h-full p-3">
@@ -65,9 +88,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
         <div className="flex gap-7 items-center mr-5">
           <Edit
             className="cursor-pointer transition-all hover:scale-110"
-            onClick={() => {
-              setEditable(!editable);
-            }}
+            onClick={handleEditAndFetch}
           />
           <Copy
             className="cursor-pointer transition-all hover:scale-110"
@@ -107,7 +128,9 @@ const PasteContent: React.FC<PasteContentProps> = ({
           disabled
           className="w-full resize-none text-white p-2 outline-none"
           rows={30}
-          onChange={(e) => {updatePaste(activePasteID, { content: e.target.value })}}
+          onChange={(e) => {
+            updatePaste(activePasteID, { content: e.target.value });
+          }}
           value={activePaste?.content || ""}
         />
         <button
