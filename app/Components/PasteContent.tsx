@@ -122,7 +122,9 @@ const PasteContent: React.FC<PasteContentProps> = ({
               }, 3000);
             }}
           />
-          {shareCopied && <StatusPopup status="Link Copied to clipboard!" stbool={true} />}
+          {shareCopied && (
+            <StatusPopup status="Link Copied to clipboard!" stbool={true} />
+          )}
         </div>
       </div>
 
@@ -144,8 +146,19 @@ const PasteContent: React.FC<PasteContentProps> = ({
         />
         <button
           className="absolute bottom-2 right-2 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg hover:border-red-500 transition-colors cursor-pointer"
-          onClick={() => {
-            signOut();
+          onClick={ async () => {
+            if (session?.user?.id?.startsWith("guest_")) {
+              try {
+                await fetch("/api/cleanup", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ userID: session.user.id }),
+                });
+              } catch (err) {
+                console.error("Failed to cleanup guest:", err);
+              }
+            }
+            await signOut({ callbackUrl: "/login" });
           }}
         >
           Logout
