@@ -4,8 +4,6 @@ import { signOut, useSession } from "next-auth/react";
 import StatusPopup from "./StatusPopup";
 import { Paste } from "../types";
 
-function handleShare() {}
-
 interface PasteContentProps {
   activePasteID: string;
   pastes: Paste[];
@@ -19,6 +17,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
 }) => {
   const [editable, setEditable] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
   const inputTitleRef = useRef<HTMLInputElement>(null);
 
   const updatePaste = (id: string, updatedFields: Partial<Paste>) => {
@@ -31,7 +30,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
 
   const activePaste = pastes.find((paste) => paste.paste_id === activePasteID);
 
-  const {data: session} = useSession();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const title = document.getElementById("title");
@@ -112,8 +111,18 @@ const PasteContent: React.FC<PasteContentProps> = ({
           {}
           <Share
             className="cursor-pointer transition-all hover:scale-110"
-            onClick={handleShare}
+            onClick={() => {
+              navigator.clipboard.writeText(
+                `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/share/${activePaste?.paste_id}`
+              );
+              setShareCopied(true);
+
+              setTimeout(() => {
+                setShareCopied(false);
+              }, 3000);
+            }}
           />
+          {shareCopied && <StatusPopup status="Link Copied to clipboard!" stbool={true} />}
         </div>
       </div>
 
