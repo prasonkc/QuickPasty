@@ -5,7 +5,7 @@ import { Paste } from "../types";
 interface PasteComponentProps {
   paste: Paste;
   onDelete: (id: string) => void;
-  activePasteID: string
+  activePasteID: string;
   setActivePasteID: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -13,11 +13,13 @@ const PasteComponent: React.FC<PasteComponentProps> = ({
   paste,
   onDelete,
   activePasteID,
-  setActivePasteID
+  setActivePasteID,
 }) => {
   return (
     <div
-      className={`border border-gray-700 rounded-lg h-20 px-4 py-3 cursor-pointer mb-3 hover:bg-card-2 transition-all hover:scale-105 ${paste.id === activePasteID ? "bg-card-2 scale-105" : ""}`}
+      className={`border border-gray-700 rounded-lg h-20 px-4 py-3 cursor-pointer mb-3 hover:bg-card-2 transition-all hover:scale-105 ${
+        paste.id === activePasteID ? "bg-card-2 scale-105" : ""
+      }`}
       onClick={() => {
         setActivePasteID(paste.id);
       }}
@@ -28,9 +30,20 @@ const PasteComponent: React.FC<PasteComponentProps> = ({
         <Trash2
           size={18}
           className="transition-all hover:scale-115 duration-100"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.stopPropagation();
             onDelete(paste.id);
+
+            console.log(activePasteID);
+            await fetch(`/api/delete-paste?id=${activePasteID}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+            })
+              .then((res) => res.json())
+              .then((data) => console.log(data))
+              .catch((e) => {
+                console.log(e);
+              });
           }}
         />
       </div>

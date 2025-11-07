@@ -18,10 +18,10 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
   setActivePasteID,
   activePasteID,
 }) => {
-    const { data: session } = useSession();
-    const userID = session?.user.id
+  const { data: session } = useSession();
+  const userID = session?.user.id;
 
-    async function addPaste(title: string, content: string) {
+  async function addPaste(title: string, content: string) {
     const newPaste: Paste = {
       id: uuidv4(),
       title: title,
@@ -37,7 +37,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
         paste_id: newPaste.id,
         paste_title: newPaste.title,
         paste_content: newPaste.content,
-        userID: userID
+        userID: userID,
       }),
     })
       .then((res) => res.json())
@@ -47,9 +47,9 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
       });
   }
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     setPastes(pastes.filter((paste) => paste.id !== id));
-  }
+    }
 
   return (
     <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full hidden md:flex flex-col">

@@ -1,0 +1,2 @@
+only one paste is being created while calling /api/save-paste, multiple pastes on same browser session doesn't work
+activePasteID is empty string while Deleting
