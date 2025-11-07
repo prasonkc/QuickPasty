@@ -21,16 +21,16 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPastes = async () => {
-      await fetch(`/api/get-pastes?userID=${session?.user.id}`, {
-        method: "GET",
-        headers: {"Content-type": "application/json"},
-      }).then(req => req.json())
+      if (!session) return;
+
+      await fetch(`/api/get-pastes?userID=${session?.user.id}`)
+      .then(req => req.json())
       .then((data) => {
         setPastes(data)
       })
     }
     fetchPastes()
-  }, []);
+  }, [session]);
 
   return (
     <div className="flex">

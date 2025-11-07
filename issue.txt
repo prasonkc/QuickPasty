@@ -1,0 +1,2 @@
+To implement:
+Remove guest pastes after they sign out or session expires
