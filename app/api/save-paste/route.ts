@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const { paste_id, paste_title, paste_content, userID } = await req.json();
 
   await connectToDB();
-  const existingPaste = await Paste.findOne({ paste_id });
+  const existingPaste = await Paste.findOne({ paste_id: paste_id });
 
   try {
     if (existingPaste) {

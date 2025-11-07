@@ -19,7 +19,6 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
   activePasteID,
 }) => {
   const { data: session } = useSession();
-  const userID = session?.user.id;
 
   async function addPaste(title: string, content: string) {
     const newPaste: Paste = {
@@ -29,6 +28,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
     };
 
     setPastes([...pastes, newPaste]);
+    console.log(newPaste.id)
 
     await fetch("/api/save-paste", {
       method: "POST",
@@ -37,7 +37,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
         paste_id: newPaste.id,
         paste_title: newPaste.title,
         paste_content: newPaste.content,
-        userID: userID,
+        userID: session?.user.id,
       }),
     })
       .then((res) => res.json())
