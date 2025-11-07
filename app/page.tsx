@@ -19,6 +19,19 @@ export default function Home() {
     }
   }, [router, session]);
 
+  useEffect(() => {
+    const fetchPastes = async () => {
+      await fetch(`/api/get-pastes?userID=${session?.user.id}`, {
+        method: "GET",
+        headers: {"Content-type": "application/json"},
+      }).then(req => req.json())
+      .then((data) => {
+        setPastes(data)
+      })
+    }
+    fetchPastes()
+  }, []);
+
   return (
     <div className="flex">
       <PasteUi pastes={pastes} setPastes = {setPastes} activePasteID={activePasteID} setActivePasteID={setActivePasteID}/>

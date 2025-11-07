@@ -22,21 +22,21 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
 
   async function addPaste(title: string, content: string) {
     const newPaste: Paste = {
-      id: uuidv4(),
-      title: title,
-      content: content,
+      paste_id: uuidv4(),
+      paste_title: title,
+      paste_content: content,
     };
 
     setPastes([...pastes, newPaste]);
-    console.log(newPaste.id)
+    console.log(newPaste.paste_id)
 
     await fetch("/api/save-paste", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        paste_id: newPaste.id,
-        paste_title: newPaste.title,
-        paste_content: newPaste.content,
+        paste_id: newPaste.paste_id,
+        paste_title: newPaste.paste_title,
+        paste_content: newPaste.paste_content,
         userID: session?.user.id,
       }),
     })
@@ -48,9 +48,8 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
   }
 
   async function handleDelete(id: string) {
-    setPastes(pastes.filter((paste) => paste.id !== id));
+    setPastes(pastes.filter((paste) => paste.paste_id !== id));
 
-    console.log(activePasteID);
     await fetch(`/api/delete-paste?id=${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -91,7 +90,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
       <div className="paste-container ">
         {pastes.map((paste) => (
           <PasteComponent
-            key={paste.id}
+            key={paste.paste_id}
             paste={paste}
             onDelete={handleDelete}
             activePasteID={activePasteID}

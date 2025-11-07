@@ -5,7 +5,6 @@ export interface QuickPasty extends Document {
     username?: string;
     email: string;
     password: string;
-    pastes?: string[];
 }
 
 const QuickPastySchema = new Schema<QuickPasty>(
@@ -13,7 +12,6 @@ const QuickPastySchema = new Schema<QuickPasty>(
         username: { type: String, unique: true, sparse: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        pastes: [{ type: Schema.Types.ObjectId, ref: "Paste" }],
     },
     { timestamps: true }
 );

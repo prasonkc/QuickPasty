@@ -24,12 +24,12 @@ const PasteContent: React.FC<PasteContentProps> = ({
   const updatePaste = (id: string, updatedFields: Partial<Paste>) => {
     setPastes((prev) =>
       prev.map((paste) =>
-        paste.id === id ? { ...paste, ...updatedFields } : paste
+        paste.paste_id === id ? { ...paste, ...updatedFields } : paste
       )
     );
   };
 
-  const activePaste = pastes.find((paste) => paste.id === activePasteID);
+  const activePaste = pastes.find((paste) => paste.paste_id === activePasteID);
 
   const {data: session} = useSession();
 
@@ -53,9 +53,9 @@ const PasteContent: React.FC<PasteContentProps> = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          paste_id: activePaste?.id,
-          paste_title: activePaste?.title,
-          paste_content: activePaste?.content,
+          paste_id: activePaste?.paste_id,
+          paste_title: activePaste?.paste_title,
+          paste_content: activePaste?.paste_content,
           userID: session?.user.id,
         }),
       })
@@ -79,9 +79,9 @@ const PasteContent: React.FC<PasteContentProps> = ({
           className="font-bold text-2xl flex items-center mx-3 my-2 outline-none w-full"
           required
           onChange={(e) => {
-            updatePaste(activePasteID, { title: e.target.value });
+            updatePaste(activePasteID, { paste_title: e.target.value });
           }}
-          value={activePaste?.title || ""}
+          value={activePaste?.paste_title || ""}
           id="title"
         />
 
@@ -95,10 +95,10 @@ const PasteContent: React.FC<PasteContentProps> = ({
             onClick={() => {
               const copy =
                 "Title: " +
-                activePaste?.title +
+                activePaste?.paste_title +
                 "\n" +
                 "Description: " +
-                activePaste?.title;
+                activePaste?.paste_title;
               navigator.clipboard.writeText(copy);
               setCopied(true);
 
@@ -129,9 +129,9 @@ const PasteContent: React.FC<PasteContentProps> = ({
           className="w-full resize-none text-white p-2 outline-none"
           rows={30}
           onChange={(e) => {
-            updatePaste(activePasteID, { content: e.target.value });
+            updatePaste(activePasteID, { paste_content: e.target.value });
           }}
-          value={activePaste?.content || ""}
+          value={activePaste?.paste_content || ""}
         />
         <button
           className="absolute bottom-2 right-2 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg hover:border-red-500 transition-colors cursor-pointer"

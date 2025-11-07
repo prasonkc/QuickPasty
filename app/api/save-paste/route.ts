@@ -1,5 +1,4 @@
 import Paste from "@/models/pastes";
-// import User from "@/models/quickpasty";
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/mongodb";
 
@@ -11,7 +10,7 @@ export async function POST(req: Request) {
 
   try {
     if (existingPaste) {
-      console.log(paste_title, paste_content)
+      console.log(paste_title, paste_content);
       await Paste.findByIdAndUpdate(existingPaste._id, {
         paste_title: paste_title,
         paste_content: paste_content,
@@ -29,6 +28,7 @@ export async function POST(req: Request) {
       userID: userID,
     });
     await newPaste.save();
+
     return NextResponse.json(
       { message: "Paste successfully Created" },
       { status: 201 }

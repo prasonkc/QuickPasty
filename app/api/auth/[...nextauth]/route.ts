@@ -6,6 +6,7 @@ import { connectToDB } from "@/lib/mongodb";
 import User from "@/models/quickpasty";
 import UserOAuth from "@/models/provider";
 import bcrypt from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
 
 declare module "next-auth" {
   interface Session {
@@ -66,7 +67,6 @@ const authOptions: NextAuthOptions = {
       name: "Guest",
       credentials: {},
       async authorize(credentials) {
-        const { v4: uuidv4 } = require('uuid');
         return {
           id: `guest_${uuidv4()}`,
           name: "Guest User",
@@ -92,9 +92,9 @@ const authOptions: NextAuthOptions = {
     if (account?.provider === "google" || account?.provider === "github") {
       await connectToDB();
 
-      const email = user.email || (profile as any)?.email;
-      const name = user.name || (profile as any)?.name;
-      const providerId = (profile as any)?.id || (profile as any)?.sub || account.providerAccountId;
+      const email = user.email || profile?.email;
+      const name = user.name || profile?.name;
+      const providerId =  profile?.sub || account.providerAccountId;
 
       await UserOAuth.findOneAndUpdate(
         email ? { email } : { provider: account.provider, providerId },

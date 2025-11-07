@@ -1,5 +1,5 @@
 export interface Paste {
-    id: string
-    title: string;
-    content: string;
+    paste_id: string
+    paste_title: string;
+    paste_content: string | "";
 }

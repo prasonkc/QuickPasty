@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     if (!deleted) {
       return NextResponse.json({ error: "Paste not found" }, { status: 404 });
     }
+
     return NextResponse.json(
       { message: "Paste successfully deleted" },
       { status: 201 }

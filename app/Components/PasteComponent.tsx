@@ -18,26 +18,26 @@ const PasteComponent: React.FC<PasteComponentProps> = ({
   return (
     <div
       className={`border border-gray-700 rounded-lg h-20 px-4 py-3 cursor-pointer mb-3 hover:bg-card-2 transition-all hover:scale-105 ${
-        paste.id === activePasteID ? "bg-card-2 scale-105" : ""
+        paste.paste_id === activePasteID ? "bg-card-2 scale-105" : ""
       }`}
       onClick={() => {
-        setActivePasteID(paste.id);
+        setActivePasteID(paste.paste_id);
       }}
     >
       {/* title */}
       <div className="font-bold text-lg flex items-center justify-between pr-2">
-        <span>{paste.title}</span>
+        <span>{paste.paste_title}</span>
         <Trash2
           size={18}
           className="transition-all hover:scale-115 duration-100"
           onClick={async (e) => {
             e.stopPropagation();
-            onDelete(paste.id);
+            onDelete(paste.paste_id);
           }}
         />
       </div>
       {/* desc */}
-      <div className="text-sm">{paste.content.slice(0, 26) + "..."}</div>
+      <div className="text-sm">{paste.paste_content.slice(0, 26) + "..."}</div>
     </div>
   );
 };
