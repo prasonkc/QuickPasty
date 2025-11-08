@@ -4,6 +4,7 @@ import PasteComponent from "./PasteComponent";
 import { Paste } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 interface PasteSidebarprops {
   pastes: Paste[];
@@ -62,7 +63,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
     }
 
   return (
-    <div className="bg-card rounded-2xl w-100 m-3 p-5 min-h-full hidden md:flex flex-col">
+    <div className="bg-card rounded-2xl w-100 m-3 p-5 hidden md:flex flex-col">
       {/* icon */}
       <div className="text-2xl font-bold mx-3">
         <span>QuickPasty</span>

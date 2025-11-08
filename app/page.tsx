@@ -33,7 +33,7 @@ export default function Home() {
   }, [session]);
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
       <PasteUi pastes={pastes} setPastes = {setPastes} activePasteID={activePasteID} setActivePasteID={setActivePasteID}/>
       <PasteContent
         pastes = {pastes}

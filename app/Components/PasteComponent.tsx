@@ -25,7 +25,7 @@ const PasteComponent: React.FC<PasteComponentProps> = ({
       }}
     >
       {/* title */}
-      <div className="font-bold text-lg flex items-center justify-between pr-2">
+      <div className="font-bold text-sm md:text-lg flex items-center justify-between pr-2">
         <span>{paste.paste_title.slice(0,17)}</span>
         <Trash2
           size={18}

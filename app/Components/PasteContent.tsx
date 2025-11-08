@@ -47,25 +47,29 @@ const PasteContent: React.FC<PasteContentProps> = ({
 
   const handleEditAndFetch = async () => {
     setEditable(!editable);
-      await fetch("/api/save-paste", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          paste_id: activePaste?.paste_id,
-          paste_title: activePaste?.paste_title,
-          paste_content: activePaste?.paste_content,
-          userID: session?.user.id,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .catch((e) => {
-          console.log(e);
-        });
+    await updateInfo()
+  };
+
+  const updateInfo = async () => {
+    await fetch("/api/save-paste", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paste_id: activePaste?.paste_id,
+        paste_title: activePaste?.paste_title,
+        paste_content: activePaste?.paste_content,
+        userID: session?.user.id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
-    <div className="w-full bg-card ml-0 m-3 rounded-2xl min-h-full p-3">
+    <div className="w-full bg-card m-3 md:ml-0 rounded-2xl p-3">
       {/* Title */}
       <div className="flex items-center justify-around">
         <input
@@ -88,7 +92,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
             onClick={handleEditAndFetch}
           />
           <Copy
-            className="cursor-pointer transition-all hover:scale-110"
+            className="cursor-pointer transition-all hover:scale-110 hidden md:flex"
             onClick={() => {
               const copy =
                 "Title: " +
@@ -109,7 +113,9 @@ const PasteContent: React.FC<PasteContentProps> = ({
           {}
           <Share
             className="cursor-pointer transition-all hover:scale-110"
-            onClick={() => {
+            onClick={async () => {
+              await updateInfo()
+
               navigator.clipboard.writeText(
                 `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/share/${activePaste?.paste_id}`
               );
@@ -118,6 +124,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
               setTimeout(() => {
                 setShareCopied(false);
               }, 3000);
+
             }}
           />
           {shareCopied && (
@@ -136,7 +143,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
           placeholder="Your text here..."
           disabled
           className="w-full resize-none text-white p-2 outline-none"
-          rows={30}
+          rows={33}
           onChange={(e) => {
             updatePaste(activePasteID, { paste_content: e.target.value });
           }}
@@ -144,7 +151,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
         />
         <button
           className="absolute bottom-2 right-2 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg hover:border-red-500 transition-colors cursor-pointer"
-          onClick={ async () => {
+          onClick={async () => {
             if (session?.user?.id?.startsWith("guest_")) {
               try {
                 await fetch("/api/cleanup", {

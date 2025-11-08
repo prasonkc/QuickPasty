@@ -7,7 +7,7 @@ interface StatusPopupInterface {
 
 const StatusPopup: React.FC<StatusPopupInterface> = ({status, stbool}) => {
   return (
-    <div className={`absolute bottom-0 left-0 w-[15%] p-3 text-center rounded-xl text-background m-5 ${stbool? "bg-positive": "bg-negative"}`}>
+    <div className={`absolute bottom-0 left-0 w-[15%] hidden md:flex p-3 text-center rounded-xl text-background m-5 ${stbool? "bg-positive": "bg-negative"}`}>
       {status}
     </div>
   )
