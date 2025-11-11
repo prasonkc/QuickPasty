@@ -32,6 +32,7 @@ const Share = () => {
 
   return (
    <div className="bg-card w-[97vw] h-[97vh] mx-auto my-3 rounded-3xl shadow-lg p-6 flex flex-col">
+
       
       <div className="title text-3xl font-bold text-white mb-2 flex items-center justify-between">
         {title}
@@ -50,7 +51,9 @@ const Share = () => {
       </div>
 
       <div className="content text-white text-lg flex-1 overflow-y-auto">
-        {content}
+        <pre>
+          {content}
+        </pre>
       </div>
 
       {copied && (<StatusPopup status="Copied to Clipboard" stbool={true} />)}
