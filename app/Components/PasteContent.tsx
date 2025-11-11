@@ -68,6 +68,12 @@ const PasteContent: React.FC<PasteContentProps> = ({
       });
   };
 
+  useEffect(() => {
+    updateInfo()
+  }, )
+  
+
+
   return (
     <div className="w-full bg-card m-3 md:ml-0 rounded-2xl p-3">
       {/* Title */}

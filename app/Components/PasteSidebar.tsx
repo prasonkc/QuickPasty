@@ -4,7 +4,6 @@ import PasteComponent from "./PasteComponent";
 import { Paste } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 
 interface PasteSidebarprops {
   pastes: Paste[];
