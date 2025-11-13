@@ -19,8 +19,11 @@ const pasteSlice = createSlice({
     setPastes: (state, action: PayloadAction<Paste[]>) => {
       state.value = action.payload;
     },
+    deletePaste: (state, action: PayloadAction<string>) => {
+        state.value = state.value.filter((paste) => paste.paste_id !== action.payload);
+    }
   },
 });
 
-export const { addPaste, setPastes } = pasteSlice.actions;
+export const { addPaste, setPastes, deletePaste } = pasteSlice.actions;
 export default pasteSlice.reducer;

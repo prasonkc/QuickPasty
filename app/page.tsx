@@ -44,7 +44,6 @@ export default function Home() {
   return (
     <div className="flex min-h-screen">
       <PasteUi
-        pastes={pastes}
         activePasteID={activePasteID}
         setActivePasteID={setActivePasteID}
       />

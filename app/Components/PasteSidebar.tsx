@@ -7,23 +7,21 @@ import { useSession } from "next-auth/react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import { addPaste } from "../redux/slices/pastesSlice";
+import { addPaste, deletePaste } from "../redux/slices/pastesSlice";
 
 interface PasteSidebarprops {
-  pastes: Paste[];
   // setPastes: React.Dispatch<React.SetStateAction<Paste[]>>;
   setActivePasteID: React.Dispatch<React.SetStateAction<string>>;
   activePasteID: string;
 }
 
 const PasteSidebar: React.FC<PasteSidebarprops> = ({
-  pastes,
   setActivePasteID,
   activePasteID,
 }) => {
   const { data: session } = useSession();
   const dispatch = useDispatch();
-  console.log(pastes.map(p => p.paste_id));
+  const pastes = useSelector((state: RootState) => state.pastes.value);
 
   async function handleAddPaste(title: string, content: string) {
     const newPaste: Paste = {
@@ -55,6 +53,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
 
   async function handleDelete(id: string) {
     // setPastes(pastes.filter((paste) => paste.paste_id !== id));
+    dispatch(deletePaste(id))
 
     await fetch(`/api/delete-paste?id=${id}`, {
       method: "POST",
