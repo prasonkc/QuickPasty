@@ -5,26 +5,21 @@ import StatusPopup from "./StatusPopup";
 import { Paste } from "../types";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import {updatePaste} from "../redux/slices/pastesSlice"
+import { updatePaste } from "../redux/slices/pastesSlice";
 
-interface PasteContentProps {
-  activePasteID: string;
-}
-
-const PasteContent: React.FC<PasteContentProps> = ({
-  activePasteID,
-}) => {
+const PasteContent = () => {
   const [editable, setEditable] = useState(false);
   const [copied, setCopied] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const inputTitleRef = useRef<HTMLInputElement>(null);
-  
-    const pastes = useSelector((state: RootState) => state.pastes.value);
+
+  const pastes = useSelector((state: RootState) => state.pastes.value);
+  const activePasteID = useSelector((state:RootState) => state.activePasteID.value)
   const dispatch = useDispatch<AppDispatch>();
 
-    const handleUpdatePaste = (id: string, updatedFields: Partial<Paste>) => {
-      dispatch(updatePaste({ id, updatedFields }));
-    };
+  const handleUpdatePaste = (id: string, updatedFields: Partial<Paste>) => {
+    dispatch(updatePaste({ id, updatedFields }));
+  };
 
   const activePaste = pastes.find((paste) => paste.paste_id === activePasteID);
 
@@ -45,7 +40,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
 
   const handleEditAndFetch = async () => {
     setEditable(!editable);
-    await updateInfo()
+    await updateInfo();
   };
 
   const updateInfo = async () => {
@@ -67,10 +62,8 @@ const PasteContent: React.FC<PasteContentProps> = ({
   };
 
   useEffect(() => {
-    updateInfo()
-  }, )
-  
-
+    updateInfo();
+  });
 
   return (
     <div className="w-full bg-card m-3 md:ml-0 rounded-2xl p-3">
@@ -118,7 +111,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
           <Share
             className="cursor-pointer transition-all hover:scale-110"
             onClick={async () => {
-              await updateInfo()
+              await updateInfo();
 
               navigator.clipboard.writeText(
                 `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/share/${activePaste?.paste_id}`
@@ -128,7 +121,6 @@ const PasteContent: React.FC<PasteContentProps> = ({
               setTimeout(() => {
                 setShareCopied(false);
               }, 3000);
-
             }}
           />
           {shareCopied && (

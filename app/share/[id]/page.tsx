@@ -12,8 +12,8 @@ const Share = () => {
   
   const [copied, setCopied] = useState(false);
 
-  const [title, setTitle] = useState("Title")
-  const [content, setContent] = useState("Content")
+  const [title, setTitle] = useState("Loading...")
+  const [content, setContent] = useState("Loading...")
 
   useEffect(() => {
     fetch(`/api/get-shared?id=${id}`)
