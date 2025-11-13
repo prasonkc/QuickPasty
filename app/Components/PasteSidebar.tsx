@@ -4,23 +4,13 @@ import PasteComponent from "./PasteComponent";
 import { Paste } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { useSession } from "next-auth/react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import { addPaste, deletePaste } from "../redux/slices/pastesSlice";
+import { addPaste } from "../redux/slices/pastesSlice";
 
-interface PasteSidebarprops {
-  // setPastes: React.Dispatch<React.SetStateAction<Paste[]>>;
-  setActivePasteID: React.Dispatch<React.SetStateAction<string>>;
-  activePasteID: string;
-}
-
-const PasteSidebar: React.FC<PasteSidebarprops> = ({
-  setActivePasteID,
-  activePasteID,
-}) => {
+const PasteSidebar = () => {
   const { data: session } = useSession();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const pastes = useSelector((state: RootState) => state.pastes.value);
 
   async function handleAddPaste(title: string, content: string) {
@@ -51,20 +41,6 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
       });
   }
 
-  async function handleDelete(id: string) {
-    // setPastes(pastes.filter((paste) => paste.paste_id !== id));
-    dispatch(deletePaste(id))
-
-    await fetch(`/api/delete-paste?id=${id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((e) => {
-        console.log(e);
-      });
-    }
 
   return (
     <div className="bg-card rounded-2xl w-100 m-3 p-5 hidden md:flex flex-col">
@@ -97,9 +73,6 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
           <PasteComponent
             key={paste.paste_id}
             paste={paste}
-            onDelete={handleDelete}
-            activePasteID={activePasteID}
-            setActivePasteID={setActivePasteID}
           />
         ))}
       </div>

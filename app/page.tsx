@@ -4,7 +4,6 @@ import PasteContent from "./Components/PasteContent";
 import PasteUi from "./Components/PasteSidebar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "./redux/store";
 import { setPastes } from "./redux/slices/pastesSlice";
@@ -15,10 +14,9 @@ export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
-  const [activePasteID, setActivePasteID] = useState<string>("");
-
   // const count = useSelector((state: RootState) => state.counter.value);
     const pastes = useSelector((state: RootState) => state.pastes.value);
+    const activePasteID = useSelector((state: RootState) => {state.activePasteID.value})
 
   useEffect(() => {
     if (!session) {
@@ -41,12 +39,8 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen">
-      <PasteUi
-        activePasteID={activePasteID}
-        setActivePasteID={setActivePasteID}
-      />
+      <PasteUi/>
       <PasteContent
-        pastes={pastes}
         activePasteID={activePasteID}
       />
 
