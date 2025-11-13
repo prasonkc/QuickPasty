@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "./redux/store";
 import { setPastes } from "./redux/slices/pastesSlice";
-import { Paste } from "./types";
 // import { increment, decrement } from "./redux/slices/counterSlice";
 
 export default function Home() {
@@ -20,7 +19,6 @@ export default function Home() {
 
   // const count = useSelector((state: RootState) => state.counter.value);
     const pastes = useSelector((state: RootState) => state.pastes.value);
-
 
   useEffect(() => {
     if (!session) {
@@ -47,10 +45,10 @@ export default function Home() {
         activePasteID={activePasteID}
         setActivePasteID={setActivePasteID}
       />
-      {/* <PasteContent
+      <PasteContent
         pastes={pastes}
         activePasteID={activePasteID}
-      /> */}
+      />
 
 {/* -------------------------------------------------------------- */}
       {/* <div>

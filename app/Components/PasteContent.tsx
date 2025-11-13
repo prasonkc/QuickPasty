@@ -1,32 +1,30 @@
-import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Edit, Copy, Share } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import StatusPopup from "./StatusPopup";
 import { Paste } from "../types";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../redux/store";
+import {updatePaste} from "../redux/slices/pastesSlice"
 
 interface PasteContentProps {
   activePasteID: string;
-  pastes: Paste[];
-  setPastes: React.Dispatch<SetStateAction<Paste[]>>;
 }
 
 const PasteContent: React.FC<PasteContentProps> = ({
   activePasteID,
-  pastes,
-  setPastes,
 }) => {
   const [editable, setEditable] = useState(false);
   const [copied, setCopied] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const inputTitleRef = useRef<HTMLInputElement>(null);
+  
+    const pastes = useSelector((state: RootState) => state.pastes.value);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const updatePaste = (id: string, updatedFields: Partial<Paste>) => {
-    setPastes((prev) =>
-      prev.map((paste) =>
-        paste.paste_id === id ? { ...paste, ...updatedFields } : paste
-      )
-    );
-  };
+    const handleUpdatePaste = (id: string, updatedFields: Partial<Paste>) => {
+      dispatch(updatePaste({ id, updatedFields }));
+    };
 
   const activePaste = pastes.find((paste) => paste.paste_id === activePasteID);
 
@@ -86,7 +84,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
           className="font-bold text-2xl flex items-center mx-3 my-2 outline-none w-full"
           required
           onChange={(e) => {
-            updatePaste(activePasteID, { paste_title: e.target.value });
+            handleUpdatePaste(activePasteID, { paste_title: e.target.value });
           }}
           value={activePaste?.paste_title || ""}
           id="title"
@@ -151,7 +149,7 @@ const PasteContent: React.FC<PasteContentProps> = ({
           className="w-full resize-none text-white p-2 outline-none"
           rows={33}
           onChange={(e) => {
-            updatePaste(activePasteID, { paste_content: e.target.value });
+            handleUpdatePaste(activePasteID, { paste_content: e.target.value });
           }}
           value={activePaste?.paste_content || ""}
         />
