@@ -5,30 +5,36 @@ import { Paste } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { useSession } from "next-auth/react";
 
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../redux/store";
+import { addPaste } from "../redux/slices/pastesSlice";
+
 interface PasteSidebarprops {
   pastes: Paste[];
-  setPastes: React.Dispatch<React.SetStateAction<Paste[]>>;
+  // setPastes: React.Dispatch<React.SetStateAction<Paste[]>>;
   setActivePasteID: React.Dispatch<React.SetStateAction<string>>;
   activePasteID: string;
 }
 
 const PasteSidebar: React.FC<PasteSidebarprops> = ({
   pastes,
-  setPastes,
   setActivePasteID,
   activePasteID,
 }) => {
   const { data: session } = useSession();
+  const dispatch = useDispatch();
+  console.log(pastes.map(p => p.paste_id));
 
-  async function addPaste(title: string, content: string) {
+  async function handleAddPaste(title: string, content: string) {
     const newPaste: Paste = {
       paste_id: uuidv4(),
       paste_title: title,
       paste_content: content,
     };
 
-    setPastes([...pastes, newPaste]);
-    console.log(newPaste.paste_id)
+
+    // setPastes([...pastes, newPaste]);
+    dispatch(addPaste(newPaste))
 
     await fetch("/api/save-paste", {
       method: "POST",
@@ -48,7 +54,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
   }
 
   async function handleDelete(id: string) {
-    setPastes(pastes.filter((paste) => paste.paste_id !== id));
+    // setPastes(pastes.filter((paste) => paste.paste_id !== id));
 
     await fetch(`/api/delete-paste?id=${id}`, {
       method: "POST",
@@ -73,7 +79,7 @@ const PasteSidebar: React.FC<PasteSidebarprops> = ({
         <button
           className="group flex mx-auto items-center gap-3 p-4 w-full justify-center cursor-pointer transition-all hover:scale-110"
           onClick={() => {
-            addPaste("Edit your title", "Edit your content");
+            handleAddPaste("Edit your title", "Edit your content");
           }}
         >
           <Plus
