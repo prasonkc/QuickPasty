@@ -1,0 +1,17 @@
+Based on an analysis of the project, here are the states that could be declared globally in Redux to improve the application's structure and scalability:
+
+1.  **User/Session State:**
+    *   **Description:** Currently, user session information is accessed directly via the `useSession()` hook in components. Storing user data (e.g., user ID, name, email) in a Redux slice would make this information globally accessible to all components without needing to call the hook repeatedly. This can also help in decoupling components from the authentication library.
+    *   **Proposed Slice:** `userSlice` or `sessionSlice`.
+
+2.  **Application Status/Loading States:**
+    *   **Description:** The application performs several asynchronous operations like fetching, saving, and deleting pastes. Currently, there are no global loading indicators. Introducing a global loading state would allow you to display spinners or disable UI elements while these operations are in progress, providing better feedback to the user.
+    *   **Proposed Slice:** `statusSlice` or `appSlice` with boolean flags like `isLoadingPastes`, `isSavingPaste`, etc.
+
+3.  **Error State:**
+    *   **Description:** API call errors are currently logged to the console but not displayed to the user. A global error state would allow you to catch errors from anywhere in the application and display a centralized notification or modal to the user, improving error handling and user experience.
+    *   **Proposed Slice:** `errorSlice` or as part of a `statusSlice`.
+
+4.  **UI State for Modals/Popups:**
+    *   **Description:** While simple popups for "copied" notifications are handled locally, a more complex application might have modals for things like "delete confirmation" or "sharing options" that could be triggered from various components. Managing the visibility of these modals through a global UI state would simplify their control.
+    *   **Proposed Slice:** `uiSlice` with boolean flags for each modal (e.g., `isDeleteConfirmationVisible`).
